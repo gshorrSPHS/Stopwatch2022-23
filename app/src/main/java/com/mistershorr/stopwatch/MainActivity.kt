@@ -1,8 +1,11 @@
 package com.mistershorr.stopwatch
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.Chronometer
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,10 +15,36 @@ class MainActivity : AppCompatActivity() {
         val TAG = "MainActivity"
     }
 
+    lateinit var buttonStartStop: Button
+    lateinit var buttonReset: Button
+    lateinit var chronometer: Chronometer
+    var isRunning = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d(TAG, "onCreate: ")
+
+        wireWidgets()
+
+        buttonStartStop.setOnClickListener {
+            if(!isRunning) {
+                chronometer.start()
+                buttonStartStop.text = "Stop"
+                buttonStartStop.setBackgroundColor(Color.RED)
+            } else {
+                chronometer.stop()
+                buttonStartStop.text = "Start"
+                buttonStartStop.setBackgroundColor(Color.BLUE)
+            }
+            isRunning = !isRunning
+        }
+    }
+
+    private fun wireWidgets() {
+        buttonStartStop = findViewById(R.id.button_main_startStop)
+        buttonReset = findViewById(R.id.button_main_reset)
+        chronometer = findViewById(R.id.chronometer_main_stopwatch)
     }
 
     override fun onStart() {
